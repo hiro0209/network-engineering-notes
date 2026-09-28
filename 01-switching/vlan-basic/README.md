@@ -79,9 +79,13 @@ Verify MAC address learning:
 Test connectivity:
 
 PC1 → PC2
+
+
 <img width="289" height="129" alt="image" src="https://github.com/user-attachments/assets/dca4c063-6cd8-461b-9307-2db5b3a90f7f" />
 
 PC1 → PC3
+
+
 <img width="298" height="109" alt="image" src="https://github.com/user-attachments/assets/9c6f4cff-6ecf-46ab-973f-2a3b7690683a" />
 
 
