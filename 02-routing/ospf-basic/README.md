@@ -16,13 +16,8 @@
 
 Use three Cisco 3745 routers.
 
-```text
-             R1
-            /  \
-           /    \
-          /      \
-        R2 ────── R3
-```
+<img width="368" height="348" alt="image" src="https://github.com/user-attachments/assets/3358a198-00d2-4045-bc2b-508089a4cfeb" />
+
 
 The routers will form a triangle so that there are multiple possible paths between networks.
 
@@ -91,34 +86,7 @@ PC3 → 192.168.30.1
 
 ---
 
-## Configuration
-
-### 1. Configure the router interfaces
-
-Configure the IP addresses and enable the interfaces with:
-
-```text
-interface <interface>
- ip address <IP> <MASK>
- no shutdown
-```
-
-Verify the interfaces with:
-
-```text
-show ip interface brief
-```
-
-All required interfaces should eventually show:
-
-```text
-Status     Protocol
-up         up
-```
-
----
-
-### 2. Configure OSPF on R1
+### 1. Configure OSPF on R1
 
 Start OSPF:
 
@@ -136,7 +104,7 @@ network 10.0.13.0 0.0.0.3 area 0
 
 ---
 
-### 3. Configure OSPF on R2
+### 2. Configure OSPF on R2
 
 ```text
 router ospf 1
@@ -152,7 +120,7 @@ network 10.0.23.0 0.0.0.3 area 0
 
 ---
 
-### 4. Configure OSPF on R3
+### 3. Configure OSPF on R3
 
 ```text
 router ospf 1
@@ -170,29 +138,22 @@ network 10.0.23.0 0.0.0.3 area 0
 
 ## Verification
 
-### 1. Check interface status
-
-On each router:
-
-```text
-show ip interface brief
-```
-
-Confirm the required interfaces are:
-
-```text
-up    up
-```
-
----
-
-### 2. Check OSPF neighbours
+### 1. Check OSPF neighbours
 
 Run:
 
-```text
-show ip ospf neighbor
-```
+R1
+
+<img width="451" height="74" alt="image" src="https://github.com/user-attachments/assets/2cdef195-073b-4482-88e4-1ced734980fb" />
+
+R2
+
+<img width="469" height="74" alt="image" src="https://github.com/user-attachments/assets/305d94c8-ca03-4084-8a07-a0f569de0b11" />
+
+R3
+
+<img width="470" height="71" alt="image" src="https://github.com/user-attachments/assets/ad16d637-04cd-4ad1-952f-8147431b28a5" />
+
 
 Each router should discover its connected OSPF neighbours.
 
@@ -204,19 +165,21 @@ Understand:
 
 ---
 
-### 3. Check the routing table
+### 2. Check the routing table
 
-Run:
+R1
 
-```text
-show ip route
-```
+<img width="439" height="278" alt="image" src="https://github.com/user-attachments/assets/69227bcd-ca30-4e95-bd31-33bf8d6283e9" />
 
-Look for routes marked with:
+R2
 
-```text
-O
-```
+<img width="437" height="281" alt="image" src="https://github.com/user-attachments/assets/b74ac08b-e9ff-4f36-81bd-194d7ae8fccf" />
+
+R3
+
+<img width="440" height="281" alt="image" src="https://github.com/user-attachments/assets/e475a537-02da-4910-8785-209407c63fe5" />
+
+
 
 `O` means the route was learned through OSPF.
 
@@ -253,15 +216,9 @@ Both should succeed.
 
 ### 5. Observe the path
 
-Use:
+The result of: trace 192.168.30.10
 
-```text
-traceroute 192.168.30.10
-```
-
-or the appropriate traceroute command available in the VPCS environment.
-
-Observe which routers the packet passes through.
+<img width="463" height="71" alt="image" src="https://github.com/user-attachments/assets/7b69bc1f-30ab-4834-af67-f5acd7b67322" />
 
 ---
 
@@ -270,10 +227,6 @@ Observe which routers the packet passes through.
 ### Dynamic Routing
 
 Static routing requires an administrator to manually configure routes.
-
-```text
-ip route <network> <mask> <next-hop>
-```
 
 Dynamic routing protocols allow routers to exchange routing information automatically.
 
@@ -364,8 +317,6 @@ For OSPF:
 Administrative Distance = 110
 ```
 
-Do not focus heavily on this yet. The main goal of this lab is understanding how OSPF learns routes.
-
 ---
 
 ## Failover Test
@@ -399,33 +350,27 @@ interface <R1-R3 interface>
  shutdown
 ```
 
+<img width="653" height="108" alt="image" src="https://github.com/user-attachments/assets/306b9e1f-bfea-4dbb-99d5-073254093a63" />
+
+
+
+
 Check the routing table again:
 
 ```text
 show ip route
 ```
+The next hop has changed to R2.
+
+<img width="437" height="260" alt="image" src="https://github.com/user-attachments/assets/ef498b18-965a-4099-af20-0851f1ebcb7f" />
+
 
 Then test:
 
 ```text
 PC1 → PC3
 ```
-
-again.
-
-Observe whether OSPF selects an alternative path:
-
-```text
-PC1
- ↓
-R1
- ↓
-R2
- ↓
-R3
- ↓
-PC3
-```
+<img width="347" height="91" alt="image" src="https://github.com/user-attachments/assets/45973fc7-c43c-4972-8da5-b43cd0383e6c" />
 
 This demonstrates one of the major advantages of dynamic routing: routers can adapt when the topology changes.
 
@@ -465,35 +410,6 @@ Identify routes marked with:
 
 ```text
 O
-```
-
----
-
-### Connectivity Test
-
-Record:
-
-```text
-PC1 → PC2:
-PC1 → PC3:
-PC2 → PC1:
-PC2 → PC3:
-```
-
----
-
-### Failover Test
-
-Record what happened after shutting down one router-to-router link.
-
-```text
-Before failure:
-
-Path:
-
-After failure:
-
-Path:
 ```
 
 ---
