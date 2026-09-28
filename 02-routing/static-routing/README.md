@@ -9,9 +9,8 @@
 
 ## Topology
 
-```text
-PC1 ─── R1 ───── R2 ─── PC2
-```
+<img width="575" height="185" alt="image" src="https://github.com/user-attachments/assets/4aef80b5-df3e-4170-86df-d198f27305d0" />
+
 
 ### Devices
 
@@ -41,10 +40,10 @@ PC1 ─── R1 ───── R2 ─── PC2
 | Device | Interface | IP Address    | Subnet Mask | Default Gateway |
 | ------ | --------- | ------------- | ----------- | --------------- |
 | PC1    | NIC       | 192.168.10.10 | /24         | 192.168.10.1    |
-| R1     | G0/0      | 192.168.10.1  | /24         | -               |
-| R1     | G0/1      | 10.0.0.1      | /30         | -               |
-| R2     | G0/0      | 10.0.0.2      | /30         | -               |
-| R2     | G0/1      | 192.168.20.1  | /24         | -               |
+| R1     | F0/0      | 192.168.10.1  | /24         | -               |
+| R1     | S0/0      | 10.0.0.1      | /30         | -               |
+| R2     | S0/0      | 10.0.0.2      | /30         | -               |
+| R2     | F0/0      | 192.168.20.1  | /24         | -               |
 | PC2    | NIC       | 192.168.20.10 | /24         | 192.168.20.1    |
 
 ## Configuration
@@ -119,11 +118,14 @@ On R1 and R2:
 show ip interface brief
 ```
 
-Verify that the required interfaces are:
+R1
 
-```text
-up    up
-```
+<img width="472" height="71" alt="image" src="https://github.com/user-attachments/assets/891bc21c-d2a7-4ea3-9c99-0eeb76c390f6" />
+
+
+R2
+
+<img width="473" height="75" alt="image" src="https://github.com/user-attachments/assets/75c8e06a-4d01-4269-b66a-0eb6c36dea24" />
 
 ### 2. Check the routing table
 
@@ -133,27 +135,13 @@ On R1:
 show ip route
 ```
 
-Look for:
-
-```text
-C 192.168.10.0/24
-C 10.0.0.0/30
-S 192.168.20.0/24
-```
+<img width="443" height="191" alt="image" src="https://github.com/user-attachments/assets/9fbcff7b-cf33-49b0-aa74-c93fd2963101" />
 
 On R2:
 
-```text
-show ip route
-```
+<img width="438" height="187" alt="image" src="https://github.com/user-attachments/assets/88d465b0-c85b-44a2-adea-d8646ec017c9" />
 
-Look for:
 
-```text
-C 192.168.20.0/24
-C 10.0.0.0/30
-S 192.168.10.0/24
-```
 
 ### 3. Test connectivity
 
@@ -169,6 +157,9 @@ Expected:
 Success
 ```
 
+<img width="337" height="92" alt="image" src="https://github.com/user-attachments/assets/1440aa33-1a66-47dc-9a6a-8605323e3546" />
+
+
 Then test the reverse direction from PC2:
 
 ```text
@@ -181,6 +172,9 @@ Expected:
 Success
 ```
 
+<img width="332" height="78" alt="image" src="https://github.com/user-attachments/assets/e3181e42-ab2b-48a0-898c-d0d6dc4971fb" />
+
+
 ### 4. Test the path
 
 From PC1:
@@ -189,42 +183,7 @@ From PC1:
 tracert 192.168.20.10
 ```
 
-Observe that the packet passes through the routers before reaching PC2.
-
-## Result
-
-### Interface Verification
-
-Write what you observed from:
-
-```text
-show ip interface brief
-```
-
-### Routing Table Verification
-
-Write what you observed from:
-
-```text
-show ip route
-```
-
-### Connectivity Test
-
-Record the results:
-
-```text
-PC1 → PC2:
-PC2 → PC1:
-```
-
-### Traceroute
-
-Record the path observed with:
-
-```text
-tracert 192.168.20.10
-```
+<img width="456" height="84" alt="image" src="https://github.com/user-attachments/assets/35b7c150-5c8f-4617-9ebb-6e7a7595be5a" />
 
 ## What I Learned
 
