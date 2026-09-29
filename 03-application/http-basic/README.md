@@ -119,7 +119,7 @@ Apache was listening for HTTP connections on TCP port 80.
 From the Windows host, access the Debian web server using its Host-Only IP address.
 
 ```text
-http://<Debian-IP-address>
+http://192.168.56.102
 ```
 
 Alternatively, HTTP traffic can be generated using:
@@ -128,9 +128,13 @@ Alternatively, HTTP traffic can be generated using:
 curl http://<Debian-IP-address>
 ```
 
+<img width="367" height="204" alt="image" src="https://github.com/user-attachments/assets/5d3a0ae3-19a6-4a62-9a3e-3fc60d97fe50" />
+
+
+
 ### Result
 
-[Add screenshot here]
+<img width="608" height="464" alt="image" src="https://github.com/user-attachments/assets/04f7a671-d4da-4c93-b8c6-64626e4e004a" />
 
 The Windows client successfully communicated with the Debian web server using HTTP.
 
@@ -154,7 +158,7 @@ tcp.port == 80
 
 ### Result
 
-[Add Wireshark screenshot here]
+<img width="963" height="211" alt="image" src="https://github.com/user-attachments/assets/8c012576-becf-4641-807a-c493fc66d87d" />
 
 The HTTP communication between the client and the web server was captured successfully.
 
@@ -189,18 +193,6 @@ Server → Client : HTTP Response
 ```
 
 The Apache server returns the requested web content.
-
-### Communication Structure
-
-```text
-HTTP
- ↓
-TCP
- ↓
-IP
- ↓
-Ethernet
-```
 
 ---
 
