@@ -158,7 +158,7 @@ tcp.port == 80
 
 ### Result
 
-<img width="963" height="211" alt="image" src="https://github.com/user-attachments/assets/8c012576-becf-4641-807a-c493fc66d87d" />
+<img width="884" height="207" alt="image" src="https://github.com/user-attachments/assets/f7005d7c-bbdc-4710-ace5-4e8ab80fb498" />
 
 The HTTP communication between the client and the web server was captured successfully.
 
