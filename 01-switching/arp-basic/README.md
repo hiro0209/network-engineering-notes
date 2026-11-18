@@ -34,6 +34,9 @@ The lab focuses on understanding:
             +-------+
 ```
 
+<img width="266" height="223" alt="image" src="https://github.com/user-attachments/assets/d4edb36c-a5f4-4f5b-996f-b08c94f78e33" />
+
+
 ### Devices
 
 | Device | IP Address      | Role                     |
@@ -75,8 +78,10 @@ This ensures that PC1 does not already know the MAC address associated with PC2'
 The ARP cache can be checked using:
 
 ```bash
-arp -a
+show arp
 ```
+<img width="226" height="130" alt="image" src="https://github.com/user-attachments/assets/98951203-2719-4dc6-817a-082d3095d033" />
+
 
 If necessary, the existing ARP entry is removed before the test.
 
@@ -99,6 +104,9 @@ From PC1, a ping is sent to PC2:
 ```bash
 ping 192.168.1.20
 ```
+<img width="349" height="125" alt="image" src="https://github.com/user-attachments/assets/dd25beb5-1abb-4391-ba47-d60c79a2d69d" />
+
+
 
 Because PC1 does not yet know PC2's MAC address, PC1 first performs ARP resolution.
 
@@ -120,6 +128,9 @@ ff:ff:ff:ff:ff:ff
 
 This allows all devices on the local Ethernet LAN to receive the request.
 
+<img width="607" height="157" alt="image" src="https://github.com/user-attachments/assets/c1b756dd-8c42-4560-8f01-38aeac24198d" />
+
+
 ### 5. Analyze the ARP Reply
 
 PC2 receives the ARP Request and recognizes that the target IP address belongs to itself.
@@ -128,19 +139,26 @@ PC2 sends an ARP Reply containing its MAC address.
 
 The reply allows PC1 to create an IP-to-MAC mapping for PC2.
 
+<img width="541" height="217" alt="image" src="https://github.com/user-attachments/assets/65b87b99-c58d-4121-b403-c63cbf9dd4eb" />
+
+
 ### 6. Check the ARP Cache
 
 After the ARP exchange, the ARP cache on PC1 is checked again:
 
 ```bash
-arp -a
+show arp
 ```
+
 
 An entry similar to the following should appear:
 
 ```text
 192.168.1.20    <PC2-MAC-address>
 ```
+<img width="646" height="132" alt="image" src="https://github.com/user-attachments/assets/5e430d20-2842-4fb1-b75a-93e43f2fbb3f" />
+
+
 
 This confirms that PC1 has learned and stored PC2's MAC address.
 
@@ -151,6 +169,10 @@ A second ping is sent to PC2 while the ARP cache entry is still valid.
 Wireshark is checked to determine whether another ARP Request is generated.
 
 The expected result is that PC1 uses the existing ARP cache entry instead of sending another ARP Request.
+
+<img width="373" height="286" alt="image" src="https://github.com/user-attachments/assets/87b41d16-0eb4-498c-bed3-f899dc526c19" />
+<img width="833" height="311" alt="image" src="https://github.com/user-attachments/assets/98a7df84-7615-4cb5-843d-e8b338e4b043" />
+
 
 ---
 
@@ -186,55 +208,7 @@ Target MAC:               <PC1-MAC>
 
 The ARP Reply is sent by PC2 and identifies the MAC address associated with `192.168.1.20`.
 
----
-
-## Expected Result
-
-The expected communication sequence is:
-
-```text
-PC1
- |
- | ARP Request
- | "Who has 192.168.1.20?"
- | Destination MAC = FF:FF:FF:FF:FF:FF
- ↓
-Switch
- |
- | Broadcast
- +----------+----------+
-            |
-            ↓
-           PC2
-            |
-            | ARP Reply
-            | "192.168.1.20 is at <PC2-MAC>"
-            ↓
-           PC1
-            |
-            | Store mapping in ARP cache
-            ↓
-      IP → MAC mapping
-      192.168.1.20
-            ↓
-       <PC2-MAC>
-```
-
 After the ARP exchange, PC1 can encapsulate the IP packet into an Ethernet frame using PC2's MAC address as the destination MAC.
-
----
-
-## Results
-
-| Item                | Observed Result            | Expected Result   | Status |
-| ------------------- | -------------------------- | ----------------- | ------ |
-| ARP Request         | Generated                  | Generated         | PASS   |
-| ARP Broadcast       | `FF:FF:FF:FF:FF:FF`        | Broadcast         | PASS   |
-| Target IP           | `192.168.1.20`             | `192.168.1.20`    | PASS   |
-| ARP Reply           | Received from PC2          | Received from PC2 | PASS   |
-| Learned MAC Address | `<PC2-MAC>`                | PC2's MAC         | PASS   |
-| ARP Cache Entry     | `192.168.1.20 → <PC2-MAC>` | Mapping stored    | PASS   |
-| Second Ping         | No new ARP required        | Use ARP cache     | PASS   |
 
 ---
 
@@ -251,30 +225,6 @@ After the ARP exchange, PC1 can encapsulate the IP packet into an Ethernet frame
 5. Once the mapping exists in the ARP cache, subsequent packets can be sent without performing ARP again until the cache entry expires or is removed.
 
 6. ARP operates within the local Ethernet LAN. It is used to discover the MAC address of the next directly reachable device, not an arbitrary remote host across routed networks.
-
----
-
-## Communication Flow
-
-The complete process can be represented as:
-
-```text
-Destination IP
-192.168.1.20
-      |
-      | ARP
-      ↓
-Destination MAC
-<PC2-MAC>
-      |
-      ↓
-Ethernet Frame
-      |
-      ↓
-PC2
-```
-
-This demonstrates the relationship between IP addressing and Ethernet MAC addressing.
 
 ---
 
