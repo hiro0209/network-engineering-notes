@@ -360,7 +360,13 @@ Check the routing table again:
 ```text
 show ip route
 ```
-The next hop has changed to R2.
+
+Before: 
+
+<img width="439" height="278" alt="image" src="https://github.com/user-attachments/assets/69227bcd-ca30-4e95-bd31-33bf8d6283e9" />
+
+
+After: The next hop has changed to R2. ↓
 
 <img width="437" height="260" alt="image" src="https://github.com/user-attachments/assets/ef498b18-965a-4099-af20-0851f1ebcb7f" />
 
