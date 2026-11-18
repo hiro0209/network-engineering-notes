@@ -49,6 +49,9 @@ R3
 PC2
 ```
 
+<img width="589" height="184" alt="image" src="https://github.com/user-attachments/assets/2c53e44f-135e-489e-ba2a-9490d1604dee" />
+
+
 ### Devices
 
 | Device | Role             | IP Address                |
@@ -175,33 +178,7 @@ R3 will:
 6. Encapsulate the IP packet in a new Ethernet frame.
 7. Forward the frame to PC2.
 
-## 6. ARP Verification
-
-The ARP process will be specifically verified at R3.
-
-Before testing, the ARP cache should be cleared or verified to ensure that R3 does not already know PC2's MAC address.
-
-Expected process:
-
-```text
-R3 → Broadcast
-Who has 192.168.4.10?
-
-PC2 → R3
-192.168.4.10 is at <PC2 MAC>
-```
-
-R3 can then use the learned MAC address to create the Ethernet frame:
-
-```text
-Destination MAC = PC2
-Source MAC      = R3
-Destination IP  = 192.168.4.10
-```
-
-If the MAC address is already present in R3's ARP cache, an ARP request will not be generated.
-
-## 7. Packet Capture
+## 6. Packet Capture
 
 Wireshark will be used to capture and compare traffic at the different links.
 
@@ -209,26 +186,15 @@ Wireshark will be used to capture and compare traffic at the different links.
 
 Expected:
 
-```text
-Ethernet
- ├── Source MAC      = PC1
- └── Destination MAC = R1
+<img width="607" height="255" alt="image" src="https://github.com/user-attachments/assets/00fee2a2-e719-4409-84c1-3855186ed13f" />
 
-IP
- ├── Source IP      = PC1
- └── Destination IP = PC2
-```
 
 ### Capture 2 — R1 → R2
 
 Expected:
 
-```text
-HDLC
- └── IP Packet
-      ├── Source IP      = PC1
-      └── Destination IP = PC2
-```
+<img width="607" height="87" alt="image" src="https://github.com/user-attachments/assets/6e5220c4-db12-4083-92de-b23e880b94cb" />
+
 
 The Ethernet header used on the previous link should no longer be present.
 
@@ -236,33 +202,17 @@ The Ethernet header used on the previous link should no longer be present.
 
 Expected:
 
-```text
-Ethernet
- ├── Source MAC      = R2
- └── Destination MAC = R3
+<img width="607" height="257" alt="image" src="https://github.com/user-attachments/assets/1d60651b-f087-4712-bc90-a483b298b7ea" />
 
-IP
- ├── Source IP      = PC1
- └── Destination IP = PC2
-```
 
 ### Capture 4 — R3 → PC2
 
 Expected:
 
-```text
-ARP Request
-      ↓
-ARP Reply
-      ↓
-Ethernet Frame
-      ↓
-IP Packet
-```
+<img width="605" height="259" alt="image" src="https://github.com/user-attachments/assets/a68710bb-a93f-4b83-a1ea-d7a98b6c116b" />
 
-The Ethernet destination MAC should be PC2's MAC address.
 
-## 8. Results
+## 7. Results
 
 | Hop      | Layer 2  | Destination MAC / Address | Destination IP |
 | -------- | -------- | ------------------------- | -------------- |
@@ -271,15 +221,8 @@ The Ethernet destination MAC should be PC2's MAC address.
 | R2 → R3  | Ethernet | R3 MAC                    | PC2 IP         |
 | R3 → PC2 | Ethernet | PC2 MAC                   | PC2 IP         |
 
-### ARP
 
-| Device | Action      | Result                   |
-| ------ | ----------- | ------------------------ |
-| R3     | ARP Request | Requests PC2's MAC       |
-| PC2    | ARP Reply   | Provides its MAC address |
-| R3     | ARP Cache   | Stores IP-to-MAC mapping |
-
-## 9. Key Findings
+## 8. Key Findings
 
 1. The Layer 3 destination identifies the final destination of the packet.
 2. The Layer 2 destination identifies the device that should receive the frame on the current link.
@@ -289,7 +232,7 @@ The Ethernet destination MAC should be PC2's MAC address.
 6. R3 uses ARP to discover PC2's MAC address when the address is not already in its ARP cache.
 7. A single IP packet is therefore carried by multiple Layer 2 frames during its journey from PC1 to PC2.
 
-## 10. Conclusion
+## 9. Conclusion
 
 This lab demonstrates the relationship between Layer 3 routing and Layer 2 forwarding.
 
